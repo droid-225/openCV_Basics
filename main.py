@@ -79,38 +79,72 @@ import numpy as np
 #cv2.waitKey(0)
 
 # Events
-flag = False
-ix = -1 # current location of x
-iy = -1 # current location of y
+#flag = False
+#ix = -1 # current location of x
+#iy = -1 # current location of y
 
-def draw(event,x,y,flags,params): # x and y are the coordinates of the mouse
-    global flag,ix,iy
+#def draw(event,x,y,flags,params): # x and y are the coordinates of the mouse
+    #global flag,ix,iy
 
     # draw circles on click
     #if event == 1:
         #cv2.circle(img,center=(x,y),radius=50,color=(0,0,255),thickness=-1)
     # draw rectangle
-    if event == 1: # on click
+    #if event == 1: # on click
+        #flag = True
+        #ix = x
+        #iy = y
+    #elif event == 0: # on movement
+        #if flag == True:
+            #cv2.rectangle(img,pt1=(ix,iy),pt2=(x,y),color=(0,255,255),thickness=-1)
+
+    #elif event == 4: # on release
+        #flag = False
+        #cv2.rectangle(img,pt1=(ix,iy),pt2=(x,y),color=(0,255,255),thickness=-1)
+
+#cv2.namedWindow(winname = "window") # winname = window name
+#cv2.setMouseCallback("window",draw) # mouse listener
+
+#img = np.zeros((512,512,3))
+
+#while True:
+    #cv2.imshow("window",img)
+
+    #if cv2.waitKey(1) & 0xFF == ord('x'): # 0xFF is keyboard input, ord(key), here the window only closes if x is pressed on the keyboard
+        #break
+
+#cv2.destroyAllWindows()
+
+# Cropping Tool
+img = cv2.imread("img/mush.png")
+
+flag = False
+ix = -1
+iy = -1
+def crop(event,x,y,flags,params):
+    global flag,ix,iy
+
+    if event == 1:
         flag = True
         ix = x
         iy = y
-    elif event == 0: # on movement
-        if flag == True:
-            cv2.rectangle(img,pt1=(ix,iy),pt2=(x,y),color=(0,255,255),thickness=-1)
 
-    elif event == 4: # on release
+    elif event == 4:
+        fx = x
+        fy = y
         flag = False
-        cv2.rectangle(img,pt1=(ix,iy),pt2=(x,y),color=(0,255,255),thickness=-1)
+        cv2.rectangle(img,pt1=(ix,iy),pt2=(x,y),thickness=1,color=(0,0,0))
+        # Cropping
+        cropped = img[iy:fy,ix:fx]
+        cv2.imshow("new_window",cropped)
+        cv2.waitKey(0)
 
-cv2.namedWindow(winname = "window") # winname = window name
-cv2.setMouseCallback("window",draw) # mouse listener
-
-img = np.zeros((512,512,3))
+cv2.namedWindow(winname="window")
+cv2.setMouseCallback("window",crop)
 
 while True:
     cv2.imshow("window",img)
-
-    if cv2.waitKey(1) & 0xFF == ord('x'): # 0xFF is keyboard input, ord(key), here the window only closes if x is pressed on the keyboard
+    if cv2.waitKey(1) & 0xFF == ord('x'):
         break
 
 cv2.destroyAllWindows()
