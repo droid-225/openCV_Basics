@@ -1,0 +1,1 @@
+To allow the pose program to work, copy the model folder from the openCV learning folder in the pose program folder
